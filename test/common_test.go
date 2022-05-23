@@ -13,11 +13,11 @@ var tmpArticleList []article
 
 func TestMain(m *testing.M) {
 
-	gin.SetMode(gin.TestMode)
-	os.Exit(m.Run())
+	gin.SetMode(gin.TestMode) // Sets Gin to Test Mode
+	os.Exit(m.Run())          // Runs the other tests
 }
 
-func getRouter(withTemplates bool) *gin.Engine {
+func getRouter(withTemplates bool) *gin.Engine { // Helper function to create a router during testing
 	r := gin.Default()
 	if withTemplates {
 		r.LoadHTMLGlob("templates/*")
@@ -25,20 +25,20 @@ func getRouter(withTemplates bool) *gin.Engine {
 	return r
 }
 
-func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *httptest.ResponseRecorder) bool) {
+func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *httptest.ResponseRecorder) bool) { // Helper function to process a request and test its response
 
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
+	w := httptest.NewRecorder() // Creates a response recorder
+	r.ServeHTTP(w, req)         // Creates the service and process the above request.
 
 	if !f(w) {
 		t.Fail()
 	}
 }
 
-func saveLists() {
+func saveLists() { // This function is used to store the main lists into the temporary one
 	tmpArticleList = articleList
 }
 
-func restoreLists() {
+func restoreLists() { // This function is used to restore the main lists from the temporary one
 	articleList = tmpArticleList
 }
